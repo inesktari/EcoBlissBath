@@ -1,0 +1,47 @@
+<section class="review-section">
+    <h1>Votre avis</h1>
+
+    <form [formGroup]="reviewForm" *ngIf="isLogged" data-cy="review-form">
+        <div>
+            <label for="rating" [class.error]="reviewForm.get('rating')?.invalid">Note</label>
+            <input type="hidden" id="rating" formControlName="rating" data-cy="review-input-rating">
+            <div #stars data-cy="review-input-rating-images">
+                <img *ngFor="let i of [1, 2, 3, 4, 5]" src="assets/images/star-empty.png" (mouseenter)="highlightStar(i)" (mouseleave)="stopHighlight()" (click)="chooseRating(i)" alt="Étoile">
+            </div>
+        </div>
+        <div>
+            <label for="title" [class.error]="reviewForm.get('title')?.invalid">Titre</label>
+            <input type="text" formControlName="title" id="title" data-cy="review-input-title">
+        </div>
+        <div>
+            <label for="comment" [class.error]="reviewForm.get('comment')?.invalid">Commentaire</label>
+            <input type="text" formControlName="comment" id="comment" data-cy="review-input-comment">
+        </div>
+        <button (click)="postReview()" data-cy="review-submit">Publier</button>
+    </form>
+    <p *ngIf="!isLogged">Connectez-vous pour ajouter un avis.</p>
+</section>
+
+<section>
+    <div class="review-section">
+        <div class="total-reviews">
+            <img src="assets/images/logo.png" alt="Logo" class="logo-review">
+            <div>
+                <p class="average" data-cy="reviews-average">{{ average | number:'1.1-1':'fr' }} <img src="assets/images/star-full.png" alt="Étoile"></p>
+                <p class="number-reviews" data-cy="reviews-number">{{ reviews.length }} avis</p>
+            </div>
+        </div>
+    </div>
+    <div class="review-section" *ngFor="let review of reviews" data-cy="review-detail">
+        <div class="single-review">
+            <img src="https://picsum.photos/53/53?id={{ review.id }}" alt="Avatar de {{ review.author?.firstname }}">
+            <div class="single-review-content">
+                <h2 data-cy="review-title">{{ review.author?.firstname }} - {{ review.title }}</h2>
+                <div class="single-review-stars" data-cy="review-note">
+                    <img *ngFor="let i of [1, 2, 3, 4, 5]" [src]="i <= (review?.rating ?? 0) ? 'assets/images/star-full.png' : 'assets/images/star-empty.png'" alt="Étoile">
+                </div>
+                <p [innerHTML]="review.comment" data-cy="review-comment"></p>
+            </div>
+        </div>
+    </div>
+</section>

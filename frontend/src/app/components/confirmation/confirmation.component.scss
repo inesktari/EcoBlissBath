@@ -1,0 +1,45 @@
+#confirmation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+
+  h1 {
+    font-weight: bold;
+    font-size: 65px;
+    text-align: center;
+  }
+
+  .subtitle-confirm {
+    font-size: 28px;
+    margin-top: 0;
+    text-align: center;
+  }
+
+  .review-cta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    p {
+      font-size: 20px;
+    }
+
+    img {
+      margin: 0 5px;
+    }
+
+    button {
+      background: #9DA077;
+      border: none;
+      border-radius: 50px;
+      width: 100%;
+      height: 44px;
+      color: #43584E;
+      font-size: 15px;
+      font-weight: bold;
+      margin-top: 40px;
+      margin-bottom: 40px;
+    }
+  }
+}

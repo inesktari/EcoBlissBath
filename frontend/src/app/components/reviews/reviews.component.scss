@@ -1,0 +1,124 @@
+:host {
+  width: 95%;
+  margin: auto;
+  max-width: 1000px;
+  display: flex;
+  justify-content: space-between;
+
+  section {
+    width: calc(50% - 12.5px);
+  }
+}
+
+.review-section {
+  width: 100%;
+  padding: 40px;
+  background: white;
+  margin-bottom: 25px;
+
+  h1 {
+    font-size: 35px;
+    margin-top: 0;
+    margin-bottom: 25px;
+  }
+
+  button {
+    width: 225px;
+    margin: 50px auto;
+    display: block;
+  }
+}
+
+section.review-section {
+  width: calc(50% - 12.5px);
+
+  form {
+
+    img {
+      margin-right: 5px;
+      margin-bottom: 25px;
+      width: 30px;
+      margin-top: 15px;
+    }
+
+    label {
+      font-size: 18px;
+    }
+  }
+}
+
+.logo-review {
+  width: 135px;
+}
+
+
+.total-reviews {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+
+p.average {
+  font-size: 40px;
+  color: #43584E;
+  line-height: 0;
+  margin-bottom: 0;
+  margin-top: 0;
+  text-align: center;
+}
+
+p.number-reviews {
+  text-align: center;
+  font-size: 16px;
+  color: #43584E;
+  margin: 10px 0 0 0;
+}
+
+.single-review {
+  display: flex;
+  align-items: center;
+
+  & > img {
+    border-radius: 50%;
+    width: 53px;
+    height: 53px;
+    margin-right: 30px;
+  }
+
+  .single-review-content h2 {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 23px;
+    font-weight: bold;
+    color: #43584E;
+
+  }
+  .single-review-stars img {
+    width: 15px;
+    margin-right: 3px;
+  }
+
+  p {
+    font-size: 19px;
+    margin: 10px 0 0 0;
+    color: #43584E;
+  }
+}
+
+@media all and (max-width: 962px) {
+  :host {
+    flex-direction: column;
+
+    section {
+      width: 100%;
+    }
+  }
+}
+
+@media all and (max-width: 450px) {
+  .review-section .total-reviews {
+    flex-direction: column;
+    gap: 20px;
+  }
+}

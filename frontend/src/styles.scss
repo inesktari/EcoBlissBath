@@ -1,0 +1,222 @@
+/* You can add global styles to this file, and also import other style files */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Cardo', sans-serif;
+  min-height: 100vh;
+}
+
+body {
+  padding-top: 70px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: #F8F4F2;
+}
+
+img {
+  max-width: 100%;
+}
+
+app-root {
+  height: 100%;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.login-register {
+  display: flex;
+  background: #F5F5F5;
+  margin-top: -7px;
+
+  .content-login {
+    width: 350px;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .bg-image {
+    width: 60%;
+
+    img {
+      border-bottom-left-radius: 75px;
+      overflow: hidden;
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+h1 {
+  color: #43584E;
+  font-size: 60px;
+  font-weight: normal;
+  margin: 50px 0 0 0;
+}
+
+.subtitle {
+  font-size: 22px;
+  margin-top: 0;
+}
+
+.text-center {
+  text-align: center;
+}
+
+a {
+  color: black;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+app-footer {
+  margin-top: auto;
+}
+
+app-confirmation {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+}
+
+input {
+  color: #43584E;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid #43584E;
+  margin-bottom: 30px;
+  min-height: 30px;
+  font-size: 15px;
+}
+
+label, input {
+  display: block;
+  width: 100%;
+}
+button {
+  background: #9DA077;
+  border: none;
+  border-radius: 50px;
+  width: 100%;
+  height: 44px;
+  color: #43584E;
+  font-size: 15px;
+  font-weight: bold;
+  margin-top: 40px;
+  cursor: pointer;
+}
+p.error, .ng-submitted .error {
+  color: #EA0F0F;
+}
+
+
+#other-products {
+  max-width: 1000px;
+  margin: auto;
+  padding: 0 15px;
+}
+
+#other-products h2 {
+  font-size: 30px;
+  color: #43584E;
+  font-weight: normal;
+  margin-top: 45px;
+}
+
+.mini-product img {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+}
+
+.mini-product h3 {
+  font-size: 16px;
+  text-transform: uppercase;
+  color: #43584E;
+  font-weight: normal;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.mini-product p {
+  font-family: 'Chivo', sans-serif;
+  color: #4B5563;
+  font-size: 16px;
+  font-weight: normal;
+}
+
+#other-products .add-to-cart p {
+  margin: 0;
+  font-size: 22px;
+  color: #4B5563;
+  font-weight: normal;
+}
+
+#other-products .add-to-cart {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#other-products .add-to-cart button {
+  width: fit-content;
+  margin: 0;
+  background: #E6D5CD;
+  height: 50px;
+  padding: 0 50px;
+  font-weight: normal;
+  color: #43584E;
+}
+
+.mini-product {
+  width: 300px;
+  max-width: 300px;
+  flex-grow: 0;
+  max-width: 32.5%;
+  margin: 20px 10px;
+}
+
+.list-products {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.mini-product:first-child {
+  margin-left: 0;
+}
+
+.mini-product:last-child {
+  margin-right: 0;
+}
+
+@media all and (max-width: 962px) {
+  .bg-image {
+    display: none;
+  }
+
+  .mini-product {
+    max-width: 49%;
+  }
+}
+
+@media all and (max-width: 650px) {
+  .mini-product {
+    max-width: 100%;
+  }
+}
+
+@media all and (max-width: 450px) {
+  h1 {
+    font-size: 35px;
+  }
+}

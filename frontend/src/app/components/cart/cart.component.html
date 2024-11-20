@@ -1,0 +1,61 @@
+<h1>Commande</h1>
+
+<section class="cart-section" *ngIf="isCartEmpty()" data-cy="cart-empty">
+    <h2>Panier</h2>
+    <p>Votre panier est vide. <a [routerLink]="['/products']">Consultez nos produits</a>.</p>
+</section>
+<section class="cart-section" *ngIf="!isCartEmpty()">
+    <h2>Panier</h2>
+
+    <div id="cart-content">
+        <div *ngFor="let productLine of order?.orderLines; let i = index;" class="product" [formGroup]="forms[i]" data-cy="cart-line">
+            <div class="product-image"><img data-cy="cart-line-image" src="{{ productLine?.product?.picture }}" alt="{{ productLine?.product?.name }}"></div>
+            <div class="product-name"><h3 data-cy="cart-line-name">{{ productLine?.product?.name }}</h3><p data-cy="cart-line-description">{{ productLine?.product?.description }}</p></div>
+            <div class="product-quantity"><input type="number" formControlName="quantity" min="1" data-cy="cart-line-quantity"></div>
+          <div class="product-total"><img src="assets/images/trash.png" data-cy="cart-line-delete" alt="Supprimer le produit" (click)="deleteProduct(productLine)"> <span data-cy="cart-line-total">{{ ((productLine?.quantity ?? 0) * (productLine?.product?.price ?? 0)) | number:'1.2-2':'fr' }} €</span></div>
+        </div>
+        <div class="total-order">
+            <div>
+                <h3>Total</h3>
+                <p data-cy="cart-total">{{ total | number:'1.2-2':'fr' }} €</p>
+            </div>
+            <div>
+                <p>Frais de livraison offerts</p>
+                <p>00,00 €</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<form [formGroup]="orderForm" data-cy="cart-form">
+    <section class="cart-section" *ngIf="!isCartEmpty()">
+        <h2>Vos informations</h2>
+
+        <div class="form">
+            <div>
+                <label for="lastname" [class.error]="orderForm.get('lastname')?.invalid">Nom</label>
+                <input type="text" formControlName="lastname" id="lastname" data-cy="cart-input-lastname">
+            </div>
+            <div>
+                <label for="firstname" [class.error]="orderForm.get('firstname')?.invalid">Prénom</label>
+                <input type="text" formControlName="firstname" id="firstname" data-cy="cart-input-firstname">
+            </div>
+            <div>
+                <label for="address" [class.error]="orderForm.get('address')?.invalid">Adresse</label>
+                <input type="text" formControlName="address" id="address" data-cy="cart-input-address">
+            </div>
+            <div>
+                <label for="zipCode" [class.error]="orderForm.get('zipCode')?.invalid">Code postal</label>
+                <input type="text" formControlName="zipCode" id="zipCode" data-cy="cart-input-zipcode">
+            </div>
+            <div>
+                <label for="city" [class.error]="orderForm.get('city')?.invalid">Ville</label>
+                <input type="text" formControlName="city" id="city" data-cy="cart-input-city">
+            </div>
+        </div>
+    </section>
+
+    <div class="confirm-cart" *ngIf="!isCartEmpty()">
+        <button (click)="confirmOrder()" data-cy="cart-submit">Validez votre commande</button>
+    </div>
+</form>

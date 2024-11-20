@@ -1,0 +1,41 @@
+<div class="login-register">
+    <div class="content-login">
+        <h1>S'inscrire</h1>
+        <p class="subtitle">Welcome back !</p>
+
+        <form [formGroup]="registerForm" data-cy="register-form">
+            <div>
+                <label for="lastname" [class.error]="registerForm.get('lastname')?.invalid">Nom</label>
+                <input type="text" formControlName="lastname" id="lastname" data-cy="register-input-lastname">
+            </div>
+            <div>
+                <label for="firstname" [class.error]="registerForm.get('firstname')?.invalid">Prénom</label>
+                <input type="text" formControlName="firstname" id="firstname" data-cy="register-input-firstname">
+            </div>
+            <div>
+                <label for="email" [class.error]="registerForm.get('email')?.invalid">Email</label>
+                <input type="text" formControlName="email" id="email" data-cy="register-input-email">
+            </div>
+            <div formGroupName="plainPassword">
+                <div>
+                    <label for="password" [class.error]="registerForm.get('plainPassword')?.get('first')?.invalid">Mot de passe</label>
+                    <input type="password" formControlName="first" id="password" data-cy="register-input-password">
+                </div>
+                <div>
+                    <label for="confirm" [class.error]="registerForm.get('plainPassword')?.get('second')?.invalid">Confirmation de mot de passe</label>
+                    <input type="password" formControlName="second" id="confirm" data-cy="register-input-password-confirm">
+                </div>
+            </div>
+            <p class="error" *ngIf="error" data-cy="register-errors">{{ error }}</p>
+
+            <button (click)="register()" data-cy="register-submit">
+                <span *ngIf="!loading">S'inscrire</span>
+                <i *ngIf="loading" class="fas fa-circle-notch fa-spin"></i>
+            </button>
+            <p class="text-center"><a [routerLink]="['/login']">Se connecter</a></p>
+        </form>
+    </div>
+    <div class="bg-image">
+        <img src="assets/images/bulles.png" alt="">
+    </div>
+</div>

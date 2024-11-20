@@ -1,0 +1,40 @@
+header#main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 64px;
+  padding-left: 22.5px;
+  padding-right: 22.5px;
+  font-size: 16px;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  background: #fff;
+
+  ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+
+    li {
+      padding: 0 22.5px;
+    }
+  }
+
+  #logo img {
+    width: 235px;
+  }
+
+}
+
+@media all and (max-width: 962px) {
+  nav.navigation {
+    display: none;
+  }
+
+  #logo {
+    margin: auto;
+  }
+}

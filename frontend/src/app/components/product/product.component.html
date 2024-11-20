@@ -1,0 +1,55 @@
+<div id="product-detail">
+    <div id="product-image">
+        <img src="{{ product.picture }}" alt="{{ product.name }}" data-cy="detail-product-img">
+    </div>
+    <div id="product-content">
+        <h1 data-cy="detail-product-name">{{ product.name }}</h1>
+        <p data-cy="detail-product-description">{{ product.description }}
+
+        <div class="product-info">
+            <h2>PEAU</h2>
+            <p data-cy="detail-product-skin">{{ product.skin }}</p>
+        </div>
+
+        <div class="product-info">
+            <h2>AROMES</h2>
+            <p data-cy="detail-product-aromas">{{ product.aromas }}</p>
+        </div>
+
+        <div class="product-info">
+            <h2>INGRÉDIENTS CLÉS</h2>
+            <p data-cy="detail-product-ingredients">{{ product.ingredients }}</p>
+        </div>
+
+        <div id="product-cart" [formGroup]="productForm" data-cy="detail-product-form">
+            <div id="product-price">
+                <p class="price" data-cy="detail-product-price">{{ product.price | number: '1.2-2':'fr' }} €</p>
+                <p class="stock" data-cy="detail-product-stock">{{ product.availableStock }} en stock</p>
+            </div>
+            <div id="product-quantity">
+                <input type="number" formControlName="quantity" data-cy="detail-product-quantity">
+            </div>
+            <div id="add-to-cart">
+                <button (click)="addToCart()" *ngIf="isLogged" data-cy="detail-product-add">Ajouter au panier</button>
+                <button [routerLink]="['/login']" *ngIf="!isLogged" data-cy="detail-product-add">Ajouter au panier</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<img src="assets/images/separator.png" alt="" class="separator-product">
+
+<section id="other-products">
+    <h2>Dans la meme gamme</h2>
+    <div class="list-products">
+        <article class="mini-product" *ngFor="let product of products">
+            <img src="{{ product.picture }}" alt="{{ product.name }}">
+            <h3>{{ product.name }}</h3>
+            <p>{{ product.ingredients }}</p>
+            <div class="add-to-cart">
+                <p>{{ product.price | number: '1.2-2':'fr' }} €</p>
+                <button [routerLink]="['/products', product.id]">Consulter</button>
+            </div>
+        </article>
+    </div>
+</section>

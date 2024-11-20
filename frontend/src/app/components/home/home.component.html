@@ -1,0 +1,65 @@
+<header>
+    <div class="text-header">
+        <h1>Il y en a pour tous les gouts</h1>
+        <p>Vous etes unique, votre savon devrait l'etre aussi. Découvrez le meilleur soin pour votre peau. <br>Eco.bliss.bath pour un petit quelque chose de spécial.</p>
+        <button [routerLink]="['/products']">Voir les produits</button>
+    </div>
+    <div class="images-header">
+        <img src="assets/images/header.png" alt="Des produits pour personnes agées et moins agées">
+    </div>
+</header>
+
+<section id="other-products">
+    <h2>Notre sélection pour toi</h2>
+    <p>Des jeux puissants d’arômes pour vous faire voyager</p>
+    <div class="list-products">
+        <article class="mini-product" *ngFor="let product of products" data-cy="product-home">
+            <img src="{{ product.picture }}" alt="{{ product.name }}" data-cy="product-home-img">
+            <h3 data-cy="product-home-name">{{ product.name }}</h3>
+            <p data-cy="product-home-ingredients">{{ product.ingredients }}</p>
+            <div class="add-to-cart">
+                <p data-cy="product-home-price">{{ product.price | number: '1.2-2':'fr' }} €</p>
+                <button [routerLink]="['/products', product.id]" data-cy="product-home-link">Consulter</button>
+            </div>
+        </article>
+    </div>
+</section>
+
+<section id="nature">
+    <div class="image-nature">
+        <img src="assets/images/nature.png" alt="Mère nature">
+    </div>
+    <div class="nature-content">
+        <h2>Mère Nature</h2>
+        <p>
+            Nous nous battons contre les lois de l'industrie de la beauté. Nous abolissons ce que l'on nous a imposé
+            pendant des décennies. des corps sans défaut. Des traitements compliqués. Masculin, féminin. Ingrédients
+            synthétiques, plastique, microplastiques, Surconsommation.
+        </p>
+        <p>Nous fabriquons des savons naturels, sans plastique, pour les cheveux, le visage et le corps.</p>
+        <p>Nous remplaçons le shampoing, le gel douche et le nettoyant pour le visage avec un seul produit.</p>
+    </div>
+</section>
+
+<section id="values">
+    <h2>Ce que nous représentons</h2>
+
+    <div class="list-values">
+        <div class="single-value">
+            <img src="assets/images/love.png" alt="Fiable">
+            <h3>Fiable</h3>
+            <p>Nous vous donnons des conseils d’experts en défendant, toujours, votre intérêt en premier.</p>
+        </div>
+        <div class="single-value">
+            <img src="assets/images/plant.svg" alt="Nature personnalisable">
+            <h3>Nature personnalisable</h3>
+            <p>Nos produits vous permettent de choisir les arômes et couleurs à votre image.</p>
+        </div>
+        <div class="single-value">
+            <img src="assets/images/earth.png" alt="Sans cruauté">
+            <h3>Sans cruauté</h3>
+            <p>Nous avons fait en sorte que nos produits ne soient pas seulement inclusifs pour les humains mais aussi
+                sans cruauté pour les animaux.</p>
+        </div>
+    </div>
+</section>

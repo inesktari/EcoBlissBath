@@ -1,0 +1,48 @@
+version: "3.9"
+
+services:
+  angular:
+    build: ./frontend
+    ports:
+      - 8080:8080
+    volumes:
+      - ./frontend:/app
+    depends_on:
+      - symfony
+
+  symfony:
+    build: ./backend
+    ports:
+      - 8081:8081
+    volumes:
+      - ./backend:/backend
+    environment:
+      - DATABASE_URL=mysql://root:jardin@mysql:3306/jardin_actuel?serverVersion=8&charset=utf8mb4
+    depends_on:
+      - mysql
+    networks:
+      - symfony
+
+  mysql:
+    image: mysql:latest
+    restart: always
+    environment:
+      - MYSQL_DATABASE=jardin_actuel
+      - MYSQL_ROOT_PASSWORD=jardin
+      - MYSQL_USER=jardin
+      - MYSQL_PASSWORD=jardin
+
+    volumes:
+      - ./data:/docker-entrypoint-initdb.d
+      - ./mysql:/var/lib/mysql
+    networks:
+      - symfony
+    ports:
+      - 3307:3306
+
+networks:
+  symfony:
+
+
+volumes:
+  data:

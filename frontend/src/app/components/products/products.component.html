@@ -1,0 +1,14 @@
+<section id="other-products">
+    <h1>Nos produits</h1>
+    <div class="list-products">
+        <article class="mini-product" *ngFor="let product of products" data-cy="product">
+            <img src="{{ product.picture }}" alt="{{ product.name }}" data-cy="product-picture">
+            <h3 data-cy="product-name">{{ product.name }}</h3>
+            <p data-cy="product-ingredients">{{ product.ingredients }}</p>
+            <div class="add-to-cart">
+                <p data-cy="product-price">{{ product.price | number: '1.2-2':'fr' }} €</p>
+                <button data-cy="product-link" [routerLink]="['/products', product.id]">Consulter</button>
+            </div>
+        </article>
+    </div>
+</section>

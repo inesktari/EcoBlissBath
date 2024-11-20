@@ -1,0 +1,20 @@
+<header id="main-header">
+    <nav class="navigation">
+        <ul>
+            <li><a [routerLink]="['/']" data-cy="nav-link-home">Accueil</a></li>
+            <li><a [routerLink]="['/products']" data-cy="nav-link-products">Produits</a></li>
+            <li><a [routerLink]="['/reviews']" data-cy="nav-link-reviews">Avis</a></li>
+        </ul>
+    </nav>
+    <div id="logo">
+        <a [routerLink]="['/']" data-cy="nav-link-home-logo"><img src="assets/images/logo.png" alt="Logo EcoBlissBath" /></a>
+    </div>
+    <nav class="navigation">
+        <ul>
+            <li *ngIf="isLogged"><a [routerLink]="['/cart']" data-cy="nav-link-cart">Mon panier</a></li>
+            <li *ngIf="isLogged"><a (click)="logout()" data-cy="nav-link-logout">Déconnexion</a></li>
+            <li *ngIf="!isLogged"><a [routerLink]="['/login']" data-cy="nav-link-login">Connexion</a></li>
+            <li *ngIf="!isLogged"><a [routerLink]="['/register']" data-cy="nav-link-register">Inscription</a></li>
+        </ul>
+    </nav>
+</header>

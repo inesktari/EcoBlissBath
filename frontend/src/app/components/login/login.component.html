@@ -1,0 +1,27 @@
+<div class="login-register">
+    <div class="content-login">
+        <h1>Se connecter</h1>
+        <p class="subtitle">Welcome back !</p>
+
+        <form [formGroup]="loginForm" data-cy="login-form">
+            <div>
+                <label for="username" [class.error]="loginForm.get('username')?.invalid">Email</label>
+                <input type="text" formControlName="username" id="username" data-cy="login-input-username">
+            </div>
+            <div>
+                <label for="password" [class.error]="loginForm.get('password')?.invalid">Mot de passe</label>
+                <input type="password" formControlName="password" id="password" data-cy="login-input-password">
+            </div>
+            <p class="error" *ngIf="error" data-cy="login-errors">{{ error }}</p>
+
+            <button (click)="login()" data-cy="login-submit">
+                <span *ngIf="!loading">Se connecter</span>
+                <i *ngIf="loading" class="fas fa-circle-notch fa-spin"></i>
+            </button>
+            <p class="text-center"><a [routerLink]="['/register']">S'inscrire</a></p>
+        </form>
+    </div>
+    <div class="bg-image">
+        <img src="assets/images/bulles.png" alt="">
+    </div>
+</div>
