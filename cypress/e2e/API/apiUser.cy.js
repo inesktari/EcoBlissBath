@@ -2,7 +2,6 @@ import { faker } from "@faker-js/faker";
 
 const username = Cypress.env("username");
 const password = Cypress.env("password");
-const baseURL = Cypress.env("baseURL");
 const apiURL = Cypress.env("apiURL");
 const invalidToken = faker.string.alphanumeric(100);
 
@@ -14,11 +13,11 @@ describe("API User", () => {
       failOnStatusCode: false,
     }).then((response) => {
       expect(response.status).to.not.eq(200);
-      // expect(response.status).to.eq(404);                   // n'est pas spécifié dans la documentation de l'API
+      // expect(response.status).to.eq(401 or 403);                   // n'est pas spécifié dans la documentation de l'API
     });
   });
 
-  it("shouldn't get user informations with fake token = 404", () => {
+  it("shouldn't get user informations with fake token", () => {
     cy.request({
       method: "POST",
       url: apiURL + "login",
@@ -32,7 +31,7 @@ describe("API User", () => {
     });
   });
 
-  it("should get user informations after authentification => 200", () => {
+  it("should get user informations after authentification", () => {
     cy.request({
       method: "POST",
       url: apiURL + "login",
