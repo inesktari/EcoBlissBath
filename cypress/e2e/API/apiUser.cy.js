@@ -6,6 +6,9 @@ const apiURL = Cypress.env("apiURL");
 const invalidToken = faker.string.alphanumeric(100);
 
 describe("API User", () => {
+  before(() => {
+    Cypress.env("token", null);
+  });
   it("shouldn't get user informations without authentification != 200", () => {
     cy.request({
       method: "GET",
@@ -13,7 +16,7 @@ describe("API User", () => {
       failOnStatusCode: false,
     }).then((response) => {
       expect(response.status).to.not.eq(200);
-      // expect(response.status).to.eq(401 or 403);                   // n'est pas spécifié dans la documentation de l'API
+      // expect(response.status).to.eq(401 or 403);     // n'est pas spécifié dans la documentation de l'API
     });
   });
 
@@ -26,7 +29,6 @@ describe("API User", () => {
       },
       failOnStatusCode: false,
     }).then((response) => {
-      expect(response.status).to.not.eq(200);
       expect(response.status).to.eq(404); // n'est pas spécifié dans la documentation de l'API
     });
   });

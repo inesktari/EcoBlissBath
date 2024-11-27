@@ -5,7 +5,10 @@ const password = Cypress.env("password");
 const apiURL = Cypress.env("apiURL");
 const invalidToken = faker.string.alphanumeric(100);
 
-describe("API orders", () => {
+describe("API orders before authentification", () => {
+  before(() => {
+    Cypress.env("token", null);
+  });
   it("shouldn't get user orders withount authentification", () => {
     cy.request({
       method: "GET",
@@ -14,6 +17,35 @@ describe("API orders", () => {
     }).then((response) => {
       expect(response.status).to.eq(401);
     });
+  });
+
+  it("shouldn't place an orders, with a fake token", () => {
+    cy.request({
+      method: "POST",
+      url: apiURL + "orders",
+      headers: {
+        Authorization: "Bearer " + `${invalidToken}`,
+      },
+      failOnStatusCode: false,
+    }).then((response) => {
+      expect(response.status).to.eq(401); //non spécifié dans la documentation
+    });
+  });
+
+  it("shouldn't place an orders, without authentification", () => {
+    cy.request({
+      method: "POST",
+      url: apiURL + "orders",
+      failOnStatusCode: false,
+    }).then((response) => {
+      expect(response.status).to.eq(401); //non spécifié dans la documentation
+    });
+  });
+});
+
+describe("API orders after authentification", () => {
+  before(() => {
+    Cypress.env("token", null);
   });
 
   it("should get user orders, after authentification", () => {
@@ -37,25 +69,36 @@ describe("API orders", () => {
           Authorization: "Bearer " + Cypress.env("token"),
         },
         failOnStatusCode: false,
-      }).then((meResponse) => {
-        expect(meResponse.status).to.eq(200);
-        expect(meResponse.body).to.have.property("orderLines");
+      }).then((ordersResponse) => {
+        expect(ordersResponse.status).to.eq(200);
+        expect(ordersResponse.body).to.have.property("orderLines");
       });
     });
   });
 
-  it("shouldn't get user orders, without authentification", () => {
+  it("shouldn't add to the cart, a prodoct whitch is not defined, after authentification ", () => {
     cy.request({
       method: "POST",
       url: apiURL + "login",
-      headers: {
-        Authorization: "Bearer " + `${invalidToken}`,
+      body: {
+        username: username,
+        password: password,
       },
       failOnStatusCode: false,
-    }).then((response) => {
-      console.log(response);
-      expect(response.status).to.not.eq(200);
-      expect(response.status).to.eq(401); //non spécifié dans la documentation
+    }).then((loginResponse) => {
+      expect(loginResponse.status).to.eq(200);
+      expect(loginResponse.body).to.have.property("token");
+      Cypress.env("token", loginResponse.body.token);
+      cy.request({
+        method: "POST",
+        url: apiURL + "orders",
+        headers: {
+          Authorization: "Bearer " + Cypress.env("token"),
+        },
+        failOnStatusCode: false,
+      }).then((ordersResponse) => {
+        expect(ordersResponse.status).to.not.eq(200);
+      });
     });
   });
 });
