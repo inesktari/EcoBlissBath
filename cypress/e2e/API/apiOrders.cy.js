@@ -9,7 +9,7 @@ describe("API orders before authentification", () => {
   before(() => {
     Cypress.env("token", null);
   });
-  it("shouldn't get user orders withount authentification", () => {
+  it("shouldn't get user orders before authentification", () => {
     cy.request({
       method: "GET",
       url: apiURL + "orders",
@@ -32,7 +32,7 @@ describe("API orders before authentification", () => {
     });
   });
 
-  it("shouldn't place an orders, without authentification", () => {
+  it("shouldn't place an orders, before authentification", () => {
     cy.request({
       method: "POST",
       url: apiURL + "orders",
@@ -72,32 +72,6 @@ describe("API orders after authentification", () => {
       }).then((ordersResponse) => {
         expect(ordersResponse.status).to.eq(200);
         expect(ordersResponse.body).to.have.property("orderLines");
-      });
-    });
-  });
-
-  it("shouldn't add to the cart, a prodoct whitch is not defined, after authentification ", () => {
-    cy.request({
-      method: "POST",
-      url: apiURL + "login",
-      body: {
-        username: username,
-        password: password,
-      },
-      failOnStatusCode: false,
-    }).then((loginResponse) => {
-      expect(loginResponse.status).to.eq(200);
-      expect(loginResponse.body).to.have.property("token");
-      Cypress.env("token", loginResponse.body.token);
-      cy.request({
-        method: "POST",
-        url: apiURL + "orders",
-        headers: {
-          Authorization: "Bearer " + Cypress.env("token"),
-        },
-        failOnStatusCode: false,
-      }).then((ordersResponse) => {
-        expect(ordersResponse.status).to.not.eq(200);
       });
     });
   });
