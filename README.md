@@ -25,42 +25,42 @@ Pour le lancement du projet vous aurez besoin de :
 https://github.com/OpenClassrooms-Student-Center/TesteurLogiciel_Automatisez_des_tests_pour_une_boutique_en_ligne
 
 #### 2. Déploiement :
-Ouvrez un terminal dans le dossier du projet, puis exécutez la commande :
+Ouvrez un terminal dans le dossier du projet, puis exécutez la commande :<br>
 docker-compose up --build
 
 #### 3. Installez les dépendances avec :
-npm install
-ou
+npm install<br>
+ou<br>
 yarn install
 
 #### 4. Lancez l'application :
-npm start
-ou
+npm start<br>
+ou<br>
 yarn start
 
 #### 5. Accédez à l'application :
-Depuis le navigateur en saisissant l'URL :
+Depuis le navigateur en saisissant l'URL :<br>
 http://localhost:8080/
 
 #### 6. Accédez à la documentation de l'API :
-Depuis le navigateur en saisissant l'URL :
+Depuis le navigateur en saisissant l'URL :<br>
 http://localhost:8081/api/doc/
 
 #### 7. Login :
-identifiant: test2@test.fr
+identifiant: test2@test.fr<br>
 mot de passe: testtest
 
 ## Procédure pour lancer les tests :
-// Installation de Cypress : npm install cypress --save-dev ...........
+// Installation de Cypress : npm install cypress --save-dev ...........<br>
 // Lancement de Cypress: npm cypress open ..............
 
 ## Procédure pour générer les rapports de tests :
 // npx cypress run .........................
 
 ## Auteur :
-Ines KAMMOUN KTARI
+Ines KAMMOUN KTARI<br>
 ineskammoun24@hotmail.fr
 
 ## Historique des versions :
-- 1.0.0 : Tests manuels.
+- 1.0.0 : Tests manuels.<br>
 - 2.0.0 : Tests automatisés avec Cypress.
