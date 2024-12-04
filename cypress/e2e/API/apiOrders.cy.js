@@ -76,3 +76,83 @@ describe("API orders after authentification", () => {
     });
   });
 });
+
+describe("API add product to cart", () => {
+  before(() => {
+    Cypress.env("token", null);
+  });
+
+  it("should add to the cart, only a products with availableStock > 0", () => {
+    cy.request({
+      method: "POST",
+      url: apiURL + "login",
+      body: {
+        username: username,
+        password: password,
+      },
+      failOnStatusCode: false,
+    }).then((loginResponse) => {
+      expect(loginResponse.status).to.eq(200);
+      expect(loginResponse.body).to.have.property("token");
+      Cypress.env("token", loginResponse.body.token);
+
+      // Récupération des produits
+      cy.request({
+        method: "GET",
+        url: apiURL + "products/",
+        headers: {
+          Authorization: "Bearer " + Cypress.env("token"),
+        },
+        failOnStatusCode: false,
+      }).then((productResponse) => {
+        expect(productResponse.status).to.eq(200);
+        expect(productResponse.body).to.be.an("array").and.not.to.be.empty;
+
+        // Filtrer les produits ayant un stock strictement positif
+        let availableProducts = "";
+        availableProducts = productResponse.body.filter(
+          (product) => product.availableStock > 0
+        );
+
+        if (availableProducts.length === 0) {
+          // Interrempre le test dans ce cas
+          throw new Error("No available products found.");
+        }
+        expect(availableProducts).to.not.be.empty;
+
+        // Récupérer aléatoirement un produit dont la quantité en stock >= 0
+        const randomProduct =
+          availableProducts[
+            Math.floor(Math.random() * availableProducts.length)
+          ];
+        const productId = randomProduct.id;
+        const availableStock = randomProduct.availableStock;
+
+        // Générer une quantité valide (1 =< fakeQuantity =< availableStock)
+        const fakeQuantity = faker.number.int({
+          min: 1,
+          max: availableStock,
+        });
+
+        cy.log(`productId: ${productId}`);
+        cy.log(`availableStock: ${availableStock}`);
+        cy.log(`fakeQuantity: ${fakeQuantity}`);
+
+        cy.request({
+          method: "PUT",
+          url: apiURL + "orders/add",
+          body: {
+            product: productId,
+            quantity: fakeQuantity,
+          },
+          headers: {
+            Authorization: "Bearer " + Cypress.env("token"),
+          },
+          failOnStatusCode: false,
+        }).then((response) => {
+          expect(response.status).to.eq(200);
+        });
+      });
+    });
+  });
+});

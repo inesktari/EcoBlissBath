@@ -9,14 +9,14 @@ describe("API User", () => {
   before(() => {
     Cypress.env("token", null);
   });
-  it("shouldn't get user informations without authentification != 200", () => {
+  it("shouldn't get user informations without authentification (401)", () => {
     cy.request({
       method: "GET",
       url: apiURL + "me",
       failOnStatusCode: false,
     }).then((response) => {
       expect(response.status).to.not.eq(200);
-      // expect(response.status).to.eq(401 or 403);     // n'est pas spécifié dans la documentation de l'API
+      expect(response.status).to.eq(401);
     });
   });
 
