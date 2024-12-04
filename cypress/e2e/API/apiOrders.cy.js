@@ -9,6 +9,7 @@ describe("API orders before authentification", () => {
   before(() => {
     Cypress.env("token", null);
   });
+
   it("shouldn't get user orders before authentification", () => {
     cy.request({
       method: "GET",
@@ -80,6 +81,137 @@ describe("API orders after authentification", () => {
 describe("API add product to cart", () => {
   before(() => {
     Cypress.env("token", null);
+  });
+
+  it("should add a product to the cart", () => {
+    cy.request({
+      method: "POST",
+      url: apiURL + "login",
+      body: {
+        username: username,
+        password: password,
+      },
+      failOnStatusCode: false,
+    }).then((loginResponse) => {
+      expect(loginResponse.status).to.eq(200);
+      expect(loginResponse.body).to.have.property("token");
+      Cypress.env("token", loginResponse.body.token);
+      cy.request({
+        method: "GET",
+        url: apiURL + "products/",
+        headers: {
+          Authorization: "Bearer " + Cypress.env("token"),
+        },
+        failOnStatusCode: false,
+      }).then((productResponse) => {
+        expect(productResponse.status).to.eq(200);
+        expect(productResponse.body).to.be.an("array").and.not.to.be.empty;
+
+        let randomProduct =
+          productResponse.body[
+            Math.floor(Math.random() * productResponse.body.length)
+          ];
+        let productId = randomProduct.id;
+        let availableStockBefore = randomProduct.availableStock;
+        // Générer une quantité valide (1 =< fakeQuantity =< 20)
+        let fakeQuantity = faker.number.int({
+          min: 1,
+          max: 20,
+        });
+        cy.log(`productId: ${productId}`);
+        cy.log(`availableStockBefore: ${availableStockBefore}`);
+        cy.log(`fakeQuantity: ${fakeQuantity}`);
+        cy.request({
+          method: "PUT",
+          url: apiURL + "orders/add",
+          body: {
+            product: productId,
+            quantity: fakeQuantity,
+          },
+          headers: {
+            Authorization: "Bearer " + Cypress.env("token"),
+          },
+          failOnStatusCode: false,
+        }).then((response) => {
+          expect(response.status).to.eq(200);
+
+          // Récupérer de nouveau le même produit, et vérifier l'update du stock
+          cy.request({
+            method: "GET",
+            url: apiURL + "products/" + productId,
+            headers: {
+              Authorization: "Bearer " + Cypress.env("token"),
+            },
+            failOnStatusCode: false,
+          }).then((productAfterResponse) => {
+            let availableStockAfter = productAfterResponse.body.availableStock;
+
+            console.log("availableStockBefore =", availableStockBefore);
+            console.log("availableStockAfter =", availableStockAfter);
+
+            expect(availableStockAfter).to.eq(
+              availableStockBefore + fakeQuantity
+            );
+          });
+        });
+      });
+    });
+  });
+
+  it("shouldn't add more than 20 of the same product to the cart", () => {
+    cy.request({
+      method: "POST",
+      url: apiURL + "login",
+      body: {
+        username: username,
+        password: password,
+      },
+      failOnStatusCode: false,
+    }).then((loginResponse) => {
+      expect(loginResponse.status).to.eq(200);
+      expect(loginResponse.body).to.have.property("token");
+      Cypress.env("token", loginResponse.body.token);
+      cy.request({
+        method: "GET",
+        url: apiURL + "products/",
+        headers: {
+          Authorization: "Bearer " + Cypress.env("token"),
+        },
+        failOnStatusCode: false,
+      }).then((productResponse) => {
+        expect(productResponse.status).to.eq(200);
+        expect(productResponse.body).to.be.an("array").and.not.to.be.empty;
+
+        let randomProduct =
+          productResponse.body[
+            Math.floor(Math.random() * productResponse.body.length)
+          ];
+        let productId = randomProduct.id;
+        let availableStockBefore = randomProduct.availableStock;
+        // Générer une quantité invalide
+        let fakeQuantity = faker.number.int({
+          min: 21,
+          max: 50,
+        });
+        cy.log(`productId: ${productId}`);
+        cy.log(`availableStockBefore: ${availableStockBefore}`);
+        cy.log(`fakeQuantity: ${fakeQuantity}`);
+        cy.request({
+          method: "PUT",
+          url: apiURL + "orders/add",
+          body: {
+            product: productId,
+            quantity: fakeQuantity,
+          },
+          headers: {
+            Authorization: "Bearer " + Cypress.env("token"),
+          },
+          failOnStatusCode: false,
+        }).then((response) => {
+          expect(response.status).not.to.eq(200);
+        });
+      });
+    });
   });
 
   it("should add to the cart, only a products with availableStock > 0", () => {
