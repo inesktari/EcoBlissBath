@@ -51,7 +51,7 @@ mot de passe: testtest
 ### Lancement de Cypress :<br>
 1. Ouvrez l'interface graphique de Cypress avec : npx cypress open<br>
 2. Pour exécuter Cypress en mode headless (sans interface graphique) : npx cypress run<br>
-### Procédure pour générer les rapports de tests :
+### Génération des rapports de tests :
 En utilisant la commande npx cypress run<br>
 
 ## Auteur :
