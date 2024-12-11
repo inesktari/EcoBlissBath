@@ -73,6 +73,20 @@ describe("API orders after authentification", () => {
       }).then((ordersResponse) => {
         expect(ordersResponse.status).to.eq(200);
         expect(ordersResponse.body).to.have.property("orderLines");
+
+        let nameOfProducts = ordersResponse.body.orderLines.map(
+          (line) => line.product.name
+        );
+
+        if (nameOfProducts.length === 0) {
+          throw new Error("The cart is empty.");
+        }
+
+        cy.log(
+          `There are ${
+            ordersResponse.body.orderLines.length
+          } products in the cart, which are : ${nameOfProducts.join(", ")}`
+        );
       });
     });
   });
