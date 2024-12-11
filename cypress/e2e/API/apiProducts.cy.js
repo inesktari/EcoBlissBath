@@ -78,7 +78,7 @@ describe("API availableStock products", () => {
     });
   });
 
-  it("Should get the list of ID products, with availableStock equal to 0", () => {
+  it("Should get the list of id products, out of stock (availableStock = 0)", () => {
     cy.request({
       method: "GET",
       url: apiURL + "products",

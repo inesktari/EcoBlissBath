@@ -10,7 +10,7 @@ describe("API orders before authentification", () => {
     Cypress.env("token", null);
   });
 
-  it("shouldn't get user orders before authentification", () => {
+  it("shouldn't get user orders", () => {
     cy.request({
       method: "GET",
       url: apiURL + "orders",
@@ -33,7 +33,7 @@ describe("API orders before authentification", () => {
     });
   });
 
-  it("shouldn't place an orders, before authentification", () => {
+  it("shouldn't place an orders", () => {
     cy.request({
       method: "POST",
       url: apiURL + "orders",
@@ -49,7 +49,7 @@ describe("API orders after authentification", () => {
     Cypress.env("token", null);
   });
 
-  it("should get user orders, after authentification", () => {
+  it("should get user orders", () => {
     cy.request({
       method: "POST",
       url: apiURL + "login",
@@ -73,6 +73,53 @@ describe("API orders after authentification", () => {
       }).then((ordersResponse) => {
         expect(ordersResponse.status).to.eq(200);
         expect(ordersResponse.body).to.have.property("orderLines");
+      });
+    });
+  });
+
+  it("should get a product sheet from an order", () => {
+    cy.request({
+      method: "POST",
+      url: apiURL + "login",
+      body: {
+        username: username,
+        password: password,
+      },
+      failOnStatusCode: false,
+    }).then((loginResponse) => {
+      expect(loginResponse.status).to.eq(200);
+      expect(loginResponse.body).to.have.property("token");
+      Cypress.env("token", loginResponse.body.token);
+
+      cy.request({
+        method: "GET",
+        url: apiURL + "orders",
+        headers: {
+          Authorization: "Bearer " + Cypress.env("token"),
+        },
+        failOnStatusCode: false,
+      }).then((ordersResponse) => {
+        expect(ordersResponse.status).to.eq(200);
+        expect(ordersResponse.body).to.have.property("orderLines");
+        expect(ordersResponse.body.orderLines).to.be.an("array").and.not.to.be
+          .empty;
+
+        // Récupérer l'id d'un produit aléatoire du panier
+        const randomOrderLine =
+          ordersResponse.body.orderLines[
+            Math.floor(Math.random() * ordersResponse.body.orderLines.length)
+          ];
+        const randomId = randomOrderLine.product.id;
+        expect(randomId).to.be.a("number");
+
+        cy.request({
+          method: "GET",
+          url: apiURL + "products/" + `${randomId}`,
+          failOnStatusCode: false,
+        }).then((sheetResponse) => {
+          expect(sheetResponse.status).to.eq(200);
+          expect(sheetResponse.body).exist;
+        });
       });
     });
   });
@@ -150,8 +197,9 @@ describe("API add product to cart", () => {
             console.log("availableStockAfter =", availableStockAfter);
 
             expect(availableStockAfter).to.eq(
-              availableStockBefore + fakeQuantity
+              availableStockBefore - fakeQuantity
             );
+            expect(availableStockAfter).to.be.gte(0);
           });
         });
       });
@@ -214,7 +262,7 @@ describe("API add product to cart", () => {
     });
   });
 
-  it("should add to the cart, only a products with availableStock > 0", () => {
+  it("should add to the cart, only products with availableStock > 0", () => {
     cy.request({
       method: "POST",
       url: apiURL + "login",
