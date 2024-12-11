@@ -179,9 +179,7 @@ describe("API add product to cart", () => {
           min: 1,
           max: 20,
         });
-        cy.log(`productId: ${productId}`);
-        cy.log(`availableStockBefore: ${availableStockBefore}`);
-        cy.log(`fakeQuantity: ${fakeQuantity}`);
+
         cy.request({
           method: "PUT",
           url: apiURL + "orders/add",
@@ -206,9 +204,6 @@ describe("API add product to cart", () => {
             failOnStatusCode: false,
           }).then((productAfterResponse) => {
             let availableStockAfter = productAfterResponse.body.availableStock;
-
-            console.log("availableStockBefore =", availableStockBefore);
-            console.log("availableStockAfter =", availableStockAfter);
 
             expect(availableStockAfter).to.eq(
               availableStockBefore - fakeQuantity
@@ -255,9 +250,7 @@ describe("API add product to cart", () => {
           min: 21,
           max: 50,
         });
-        cy.log(`productId: ${productId}`);
-        cy.log(`availableStockBefore: ${availableStockBefore}`);
-        cy.log(`fakeQuantity: ${fakeQuantity}`);
+
         cy.request({
           method: "PUT",
           url: apiURL + "orders/add",
@@ -327,10 +320,6 @@ describe("API add product to cart", () => {
           min: 1,
           max: availableStock,
         });
-
-        cy.log(`productId: ${productId}`);
-        cy.log(`availableStock: ${availableStock}`);
-        cy.log(`fakeQuantity: ${fakeQuantity}`);
 
         cy.request({
           method: "PUT",

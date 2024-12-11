@@ -12,7 +12,8 @@ describe("login / logout", () => {
     cy.getBySel("login-input-username").type(username);
     cy.getBySel("login-input-password").type(password);
     cy.getBySel("login-submit").click();
-    cy.get("nav").should("contain", "Déconnexion");
+    cy.getBySel("nav-link-logout").should("be.visible");
+    cy.get("nav").should("contain", "Déconnexion").and("contain", "Mon panier");
   });
 
   it("should successfully logout", () => {

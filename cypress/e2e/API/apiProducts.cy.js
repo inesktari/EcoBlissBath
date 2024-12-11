@@ -1,7 +1,3 @@
-import { faker } from "@faker-js/faker";
-
-const username = Cypress.env("username");
-const password = Cypress.env("password");
 const apiURL = Cypress.env("apiURL");
 
 describe("API products", () => {
