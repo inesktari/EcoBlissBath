@@ -26,6 +26,8 @@ describe("Products page", () => {
     cy.getBySel("product").should("be.visible");
     cy.getBySel("product-link").should("be.visible");
     cy.getBySel("product-link").should("contain", "Consulter");
+    cy.getBySel("nav-link-login").should("be.visible");
+    cy.get("nav").should("contain", "Connexion");
   });
 });
 
@@ -36,5 +38,36 @@ describe("Product sheet", () => {
     cy.getBySel("detail-product-add").should("be.visible");
     cy.getBySel("detail-product-add").should("contain", "Ajouter au panier");
     cy.getBySel("detail-product-stock").should("be.visible");
+    cy.getBySel("nav-link-login").should("be.visible");
+    cy.get("nav").should("contain", "Connexion");
+  });
+});
+
+describe("Reviws page", () => {
+  it("navigate to a Reviews page and verify login button exist", () => {
+    cy.visit(baseURL + "/reviews");
+    cy.getBySel("nav-link-login").should("be.visible");
+    cy.get("nav").should("contain", "Connexion");
+  });
+});
+
+describe("After authentiication, veriying if Logout and the cart buttons exist", () => {
+  it("Should exist on products page, a product sheet and reviews page", () => {
+    cy.visit(baseURL + "login");
+    cy.getBySel("login-input-username").type(username);
+    cy.getBySel("login-input-password").type(password);
+    cy.getBySel("login-submit").click();
+
+    cy.visit(baseURL + "products");
+    cy.getBySel("nav-link-logout").should("be.visible");
+    cy.get("nav").should("contain", "Déconnexion").and("contain", "Mon panier");
+
+    cy.visit(baseURL + "products/3");
+    cy.getBySel("nav-link-logout").should("be.visible");
+    cy.get("nav").should("contain", "Déconnexion").and("contain", "Mon panier");
+
+    cy.visit(baseURL + "reviews");
+    cy.getBySel("nav-link-logout").should("be.visible");
+    cy.get("nav").should("contain", "Déconnexion").and("contain", "Mon panier");
   });
 });
