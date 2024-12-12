@@ -165,3 +165,99 @@ describe("Adding a product to the cart", () => {
       });
   });
 });
+
+describe("Adding a product to cart under boundary conditions", () => {
+  before(() => {
+    Cypress.env("token", null);
+  });
+
+  it("Should not allow adding a negative quantity to the cart", () => {
+    cy.visit(baseURL + "login");
+    cy.getBySel("login-input-username").type(username);
+    cy.getBySel("login-input-password").type(password);
+    cy.getBySel("login-submit").click();
+    cy.wait(2000);
+
+    cy.visit(baseURL + "products");
+    cy.wait(2000);
+
+    cy.get(".list-products")
+      .find("article.mini-product")
+      .first()
+      .find('[data-cy="product-link"]')
+      .click();
+
+    cy.wait(800);
+
+    // Récupérer le nom du produit
+    cy.get('[data-cy="detail-product-name"]')
+      .invoke("text")
+      .then((productName) => {
+        // Ajouter une quantité négative
+        cy.get('[data-cy="detail-product-quantity"]').clear().type("-5");
+        cy.get('[data-cy="detail-product-add"]').click();
+        cy.wait(800);
+
+        // Vérifier que le produit n'est pas ajouté au panier
+        cy.visit(baseURL + "cart");
+        cy.wait(800);
+
+        cy.get("#cart-content")
+          .find(".product")
+          .contains(productName)
+          .should("not.exist");
+      });
+  });
+
+  it("Shouldn't add a quantity of 21 to the cart", () => {
+    cy.visit(baseURL + "login");
+    cy.getBySel("login-input-username").type(username);
+    cy.getBySel("login-input-password").type(password);
+    cy.getBySel("login-submit").click();
+    cy.wait(2000);
+
+    cy.visit(baseURL + "products");
+    cy.wait(2000);
+
+    cy.get(".list-products")
+      .find("article.mini-product")
+      .first()
+      .find('[data-cy="product-link"]')
+      .click();
+
+    cy.wait(800);
+
+    cy.get('[data-cy="detail-product-name"]')
+      .invoke("text")
+      .then((productName) => {
+        cy.get('[data-cy="detail-product-quantity"]').clear().type("21");
+        cy.get('[data-cy="detail-product-add"]').click();
+        cy.wait(800);
+
+        cy.visit(baseURL + "cart");
+        cy.wait(800);
+
+        cy.get("#cart-content")
+          .find(".product")
+          .contains(productName)
+          .then(($item) => {
+            if ($item.length) {
+              cy.wait(2000);
+              cy.get(".product-quantity")
+                .wait(1000)
+                .find('[data-cy="cart-line-quantity"]')
+
+                .invoke("val")
+                .then((cartQuantity) => {
+                  const quantity = Number(cartQuantity);
+                  expect(quantity).to.be.lte(20);
+                });
+            } else {
+              cy.log(
+                "Product not added to the cart as the quantity exceeds the allowed limit."
+              );
+            }
+          });
+      });
+  });
+});
