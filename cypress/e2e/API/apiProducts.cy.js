@@ -53,7 +53,7 @@ describe("API availableStock products", () => {
     Cypress.env("token", null);
   });
 
-  it("Should verify if all products have an positive availableStock", () => {
+  it("Should verify if all products have a positive availableStock", () => {
     cy.request({
       method: "GET",
       url: apiURL + "products",
